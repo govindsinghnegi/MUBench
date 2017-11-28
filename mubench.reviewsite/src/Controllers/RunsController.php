@@ -199,8 +199,7 @@ class RunsController extends Controller
     {
         $detector = Detector::find($detector_muid);
         if(!$detector){
-            $lastId = sizeof(Detector::all()) == 0 ? 0 : Detector::all()->last()->id;
-            $detector = Detector::create(['muid' => $detector_muid, 'id' => $lastId+1]);
+            $detector = Detector::create(['muid' => $detector_muid]);
         }
         return $detector;
     }

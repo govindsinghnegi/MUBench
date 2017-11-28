@@ -4,13 +4,23 @@ namespace MuBench\ReviewSite\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Detector extends Model
 {
     public $timestamps = false;
     public $incrementing = false;
-    protected $fillable = ['muid', 'id'];
+    protected $fillable = ['muid'];
     protected $primaryKey = 'muid';
+
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($detector){
+            $lastId = DB::table($detector->getTable())->max('id');
+            $detector->id = $lastId + 1;
+        });
+    }
 
     public static function withFindings(Experiment $experiment)
     {

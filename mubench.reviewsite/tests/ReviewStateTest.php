@@ -5,7 +5,6 @@ require_once 'SlimTestCase.php';
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use MuBench\ReviewSite\Controllers\ReviewsController;
-use MuBench\ReviewSite\Controllers\RunsController;
 use MuBench\ReviewSite\Models\Detector;
 use MuBench\ReviewSite\Models\Experiment;
 use MuBench\ReviewSite\Models\Misuse;
@@ -20,8 +19,7 @@ class ReviewStateTest extends SlimTestCase
     function setUp()
     {
         parent::setUp();
-        $runsController = new RunsController($this->container);
-        $this->detector = $runsController->createDetector('test-detector');
+        $this->detector = Detector::create(['muid' => 'test-detector']);
     }
 
     function test_no_potential_hits()

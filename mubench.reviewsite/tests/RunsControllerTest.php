@@ -22,9 +22,6 @@ class RunsControllerTest extends SlimTestCase
 {
     private $request_body;
 
-    /** @var RunsController */
-    private $runsController;
-
     /** @var  Detector */
     private $detector1;
 
@@ -36,8 +33,8 @@ class RunsControllerTest extends SlimTestCase
         parent::setUp();
         parent::setUp();
         $this->runsController = new RunsController($this->container);
-        $this->detector1 = $this->runsController->createDetector('-d1-');
-        $this->detector2 = $this->runsController->createDetector('-d2-');
+        $this->detector1 = Detector::create(['muid' => '-d1-']);
+        $this->detector2 = Detector::create(['muid' => '-d2-']);
         $this->request_body = json_decode(json_encode([
             "result" => "success",
             "runtime" => 42.1,
@@ -63,6 +60,15 @@ class RunsControllerTest extends SlimTestCase
                     "custom2" => "-val2-"
                 ]]
         ]));
+    }
+
+    function test_detector_creation(){
+        Detector::create(['muid' => '-d3-']);
+        Detector::create(['muid' => '-d4-']);
+        $detector = Detector::find('-d3-');
+        $detector2 = Detector::find('-d4-');
+        self::assertEquals(3, $detector->id);
+        self::assertEquals(4, $detector2->id);
     }
 
     function test_store_ex1()

@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Container\Container;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Schema;
 use PHPUnit\Framework\TestCase;
 use Monolog\Logger;
@@ -41,9 +43,11 @@ class SlimTestCase extends TestCase
         $capsule = new \Illuminate\Database\Capsule\Manager;
         $capsule->addConnection(['driver' => 'sqlite', 'database' => ':memory:']);
         $capsule->setAsGlobal();
+        $capsule->setEventDispatcher(new Dispatcher(new Container()));
         $capsule->bootEloquent();
         $this->db = $capsule;
         $this->schema = $capsule->schema();
+
         // The schema accesses the database through the app, which we do not have in
         // this context. Therefore, use an array to provide the database. This seems
         // to work fine.
@@ -54,7 +58,8 @@ class SlimTestCase extends TestCase
         require __DIR__ . '/../src/routes.php';
         require_once __DIR__ . '/../src/route_utils.php';
         require_once __DIR__ . '/../src/csv_utils.php';
-
+        \MuBench\ReviewSite\Models\Detector::flushEventListeners();
+        \MuBench\ReviewSite\Models\Detector::boot();
         $this->app = $app;
         $this->container = $app->getContainer();
     }

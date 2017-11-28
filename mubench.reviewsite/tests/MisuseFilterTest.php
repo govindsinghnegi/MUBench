@@ -55,7 +55,7 @@ class MisuseFilterTest extends SlimTestCase
         parent::setUp();
         $this->reviewController = new ReviewsController($this->container);
         $this->runController = new RunsController($this->container);
-        $this->detector = $this->runController->createDetector('test-detector');
+        $this->detector = Detector::create(['muid' => 'test-detector']);
         Reviewer::create(['name' => 'test-reviewer1']);
         Reviewer::create(['name' => 'test-reviewer2']);
         $this->experiment = Experiment::find(2);
