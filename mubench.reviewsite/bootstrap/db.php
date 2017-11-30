@@ -1,5 +1,7 @@
 <?php
 
+/** @var \Slim\Container $container */
+
 $capsule = new \Illuminate\Database\Capsule\Manager;
 $capsule->addConnection($container['db']);
 $capsule->setAsGlobal();
