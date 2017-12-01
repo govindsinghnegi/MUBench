@@ -25,6 +25,5 @@ return [
     'users' => [
         "admin" => "pass"
     ],
-    'site_base_url' => '/',
     'default_ex2_review_size' => '20'
 ];
